@@ -1,0 +1,27 @@
+
+.main {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.main-content {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.main-content-text {
+    width: 620px;
+}
+
+.main-content-slogan {
+    font-size: 60px
+}
+
+.main-content-subtext {
+    margin-top: 50px;
+}
+
+.home-img {
+    width: 475px;
+    margin-left: 44px;
+}
