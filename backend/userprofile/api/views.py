@@ -34,3 +34,16 @@ class UserProfileListCreateView(views.APIView):
         UserProfile.objects.filter(pk=pk).delete()
         return Response({ "Success": "true"})
 
+class MoodListCreateView(views.APIView):
+
+    def get(self, request, pk=None):
+        queryset = UserProfile.objects.all()
+        serializer = UserProfileSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        # give wave file to google api... test = function(request)
+        profile = UserProfile.objects.get(pk=pk)
+        profile.moodList.append(request.data)
+        profile.save()
+        return Response(request.data, status=status.HTTP_200_OK)
