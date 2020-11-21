@@ -44,13 +44,9 @@ def sentiment(content):
 
     document = language_v1.Document(content=content, type_=language_v1.Document.Type.PLAIN_TEXT)
     annotations = client.analyze_sentiment(request={'document': document})
-
-    magnitude = annotations.document_sentiment.magnitude
-    print("****************")
-    print(magnitude)
-    print("****************")
-
-    return magnitude
+    score = annotations.document_sentiment.score
+    
+    return score
 
 class UserLogsCreateView(views.APIView):
 
