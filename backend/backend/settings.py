@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'knox',
     'corsheaders',
     'accounts',
-    'profile',
+    'userprofile',
 ]
 
 MIDDLEWARE = [
@@ -81,8 +81,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'lymncetz',
+        'USER': 'lymncetz',
+        'PASSWORD':'95Y55DLpj8JeCguXza8Ry8HpLF03IT80',
+        'HOST':'suleiman.db.elephantsql.com',
+        'PORT':'5432'
     }
 }
 
