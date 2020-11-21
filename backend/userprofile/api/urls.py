@@ -1,6 +1,5 @@
 from .views import (
-    UserProfileListCreateView,
-    MoodListCreateView
+    UserProfileListCreateView
 )
 from django.urls import path
 
