@@ -1,6 +1,8 @@
 // sagas
+import authSagas from "./auth";
 
 const sagas = [
+    authSagas,
 ];
 
 const registerSagas = (middleware) => {

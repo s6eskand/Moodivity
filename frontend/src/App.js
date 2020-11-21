@@ -18,13 +18,13 @@ import Homepage from "./components/homepage/Homepage";
 function App() {
   return (
     <div>
-        {/*<Provider store={store}>*/}
-        {/*    <PersistGate loading={null} persistor={persistor}>*/}
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
                 <BrowserRouter>
                     <Homepage/>
                 </BrowserRouter>
-        {/*    </PersistGate>*/}
-        {/*</Provider>*/}
+            </PersistGate>
+        </Provider>
     </div>
   );
 }
