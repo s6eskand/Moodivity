@@ -8,7 +8,37 @@ from django.conf import settings
 from datetime import datetime
 import json
 
-def analyze(content):
+def analyze(score):
+
+    if score > -1.0 and score < -0.6:
+        return 'very sad'
+
+    if score > -0.6 and score < -0.2:
+        return 'sad'
+
+    if score > -0.2 and score < 0.2:
+        return 'neutral'
+
+    if score > 0.2 and score < 0.6:
+        return 'happy'
+
+    if score > 0.6 and score < 1.0:
+        return 'very happy'
+
+    # analysis = {
+    #             xrange(-10, -6) : 'very sad',
+    #             xrange(-6, -2) : 'sad',
+    #             xrange(-2, 2) : 'neutral',
+    #             xrange(2, 6) : 'happy',
+    #             xrange(6, 10) : 'very happy'
+    #             }
+    # print("****************")
+    # print(analysis[8])
+    # print("****************")
+    # return analysis[8]
+
+
+def sentiment(content):
     # """Run a sentiment analysis request on text within a passed filename."""
     client = language_v1.LanguageServiceClient.from_service_account_json(settings.KEY_DIR)
 
@@ -16,7 +46,10 @@ def analyze(content):
     annotations = client.analyze_sentiment(request={'document': document})
 
     magnitude = annotations.document_sentiment.magnitude
-    
+    print("****************")
+    print(magnitude)
+    print("****************")
+
     return magnitude
 
 class UserLogsCreateView(views.APIView):
@@ -28,8 +61,10 @@ class UserLogsCreateView(views.APIView):
 
     def post(self, request, pk=None):
         dictTemp = request.data
-        mood = analyze(dictTemp["log"])
+        mood = sentiment(dictTemp["log"])
         dictTemp["mood"] = mood
+        analysis = analyze(mood)
+        dictTemp["analysis"] = analysis
         serializer = UserLogsSerializer(data=dictTemp)
         if serializer.is_valid():
             serializer.save()
