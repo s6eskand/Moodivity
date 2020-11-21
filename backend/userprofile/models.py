@@ -5,7 +5,7 @@ from django.db import models
 
 
 class UserProfile(models.Model):
-    activities = ArrayField(models.CharField(max_length=200), blank=True)
+    activities = ArrayField(models.CharField(max_length=200, blank=True))
     startTime = models.CharField(max_length=100)
     endTime = models.CharField(max_length=100)
     prodGoal = models.CharField(max_length=100)
