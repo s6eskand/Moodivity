@@ -35,7 +35,7 @@ const auth = (state = initialState, action) => {
 const config = {
     key: AUTH_KEY,
     storage: storage,
-    whitelist: ['isAuthenticated'],
+    whitelist: ['isAuthenticated', 'owner'],
 };
 
 export default persistReducer(config, auth)

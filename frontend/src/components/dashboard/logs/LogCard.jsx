@@ -25,30 +25,29 @@ const useStyles = makeStyles((theme) => ({
 
 function LogCard(props) {
     const classes = useStyles();
-    const [open, setOpen] = useState(false);
 
     return(
         <Card className={classes.root}>
             <CardHeader
-                title={props.status}
-                subheader={props.date}
+                title={
+                    <p>
+                    <span
+                        style={{
+                            paddingLeft: '10px',
+                            paddingRight: '10px',
+                            borderRadius: '50%',
+                            backgroundColor: `${props.color}`,
+                            width: '50px'
+                        }}
+                    >{Math.round(props.score * 10) / 10}</span>
+                    - {props.explanation}
+                    </p>
+                }
+                subheader={props.date.split(' ')[0]}
             />
             <CardContent>
-                <p>{props.analytics}</p>
+                <p>{props.log}</p>
             </CardContent>
-            <CardActions>
-                <IconButton
-                    style={{width: 'auto'}}
-                    onClick={() => setOpen(!open)}
-                >
-                    <ExpandMore />
-                </IconButton>
-            </CardActions>
-            <Collapse in={open}>
-                <CardContent>
-                    <p>{props.log}</p>
-                </CardContent>
-            </Collapse>
         </Card>
     )
 

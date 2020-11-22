@@ -63,10 +63,10 @@ function Navbar() {
             <div className="container">
                 <ul className="nav-links">
                     <li className="nav-link-1">
-                        <a href="#">{ABOUT}</a>
+                        <a href="">{ABOUT}</a>
                     </li>
                     <li className="nav-link-2">
-                        <a href="#">{DEMO}</a>
+                        <a href="">{DEMO}</a>
                     </li>
                 </ul>
             </div>

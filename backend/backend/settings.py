@@ -14,15 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-KEY_DIR = os.path.join(BASE_DIR,'backend', 'Moodivity-fb12d231d9c7.json')
-
-print("**************")
-print(BASE_DIR)
-print("**************")
-
-print("**************")
-print(KEY_DIR)
-print("**************")
+KEY_DIR = os.path.join(BASE_DIR, 'backend', 'Moodivity-fb12d231d9c7.json')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/

@@ -93,6 +93,7 @@ function Productivity(props) {
         <Audio
             open={state.openAudio}
             handleClose={handleAudioClose}
+            handleCheckClose={handleCheckClose}
         />
         <CheckDialog
             time={formatTimeToRemove()}
@@ -106,7 +107,6 @@ function Productivity(props) {
            <div>
                <Button
                    id="start-btn"
-                   disabled={!state.isPaused}
                    onClick={handleStart}
                    variant="outlined"
                >
@@ -114,7 +114,6 @@ function Productivity(props) {
                </Button>
                <Button
                    id="pause-btn"
-                   disabled={!state.isActive || state.isPaused}
                    onClick={handlePause}
                    variant="outlined"
                >
@@ -122,7 +121,6 @@ function Productivity(props) {
                </Button>
                <Button
                    id="stop-btn"
-                   disabled={!state.isActive}
                    onClick={handleCheckOpen}
                    variant="outlined"
                >

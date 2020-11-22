@@ -13,34 +13,22 @@ import base64
 import wave
 import os
 
-def analyze(score):
 
-    if score > -1.0 and score < -0.6:
+def analyze(score):
+    if -1.0 < score < -0.6:
         return 'verySad'
 
-    if score > -0.6 and score < -0.2:
+    if -0.6 < score < -0.2:
         return 'sad'
 
-    if score > -0.2 and score < 0.2:
+    if -0.2 < score < 0.2:
         return 'neutral'
 
-    if score > 0.2 and score < 0.6:
+    if 0.2 < score < 0.6:
         return 'happy'
 
-    if score > 0.6 and score < 1.0:
+    if 0.6 < score < 1.0:
         return 'veryHappy'
-
-    # analysis = {
-    #             xrange(-10, -6) : 'very sad',
-    #             xrange(-6, -2) : 'sad',
-    #             xrange(-2, 2) : 'neutral',
-    #             xrange(2, 6) : 'happy',
-    #             xrange(6, 10) : 'very happy'
-    #             }
-    # print("****************")
-    # print(analysis[8])
-    # print("****************")
-    # return analysis[8]
 
 
 def sentiment(content):
@@ -50,41 +38,13 @@ def sentiment(content):
     document = language_v1.Document(content=content, type_=language_v1.Document.Type.PLAIN_TEXT)
     annotations = client.analyze_sentiment(request={'document': document})
     score = annotations.document_sentiment.score
-    
+
     return score
+
 
 def transcribe(gcs_uri):
     """Asynchronously transcribes the audio file specified by the gcs_uri."""
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> fe0f2f09527010f2754e964d5834409297e25469
-    wav_file_bytes = base64.b64decode(gcs_uri)
-    # wav_file_bytes = wav_file_bytes.encode("utf-8")
-    # wave_file = wave.open("speech.wav", "wb")
-    # wave_file.setnchannels(1)
-    # wave_file.setsampwidth(2)
-    # wave_file.setframerate(44100)
-    # wave_file.writeframesraw(wav_file_bytes)
-
-<<<<<<< HEAD
->>>>>>> fe0f2f0... beginning transcribe()
-=======
->>>>>>> fe0f2f09527010f2754e964d5834409297e25469
-    # wave_file_bytes2 = base64.b64decode(wave_file)
-
-    # base64_img_bytes = gcs_uri.encode('utf-8')
-    # print("*************************")
-    # print(len(base64_img_bytes))
-
-    # with open('decoded_image.wav', 'wb') as file_to_save:
-    #     decoded_image_data = base64.decodebytes(base64_img_bytes)
-    #     file_to_save.write(decoded_image_data)
-
-<<<<<<< HEAD
-<<<<<<< HEAD
     client = speech.SpeechClient.from_service_account_json(settings.KEY_DIR)
 
     audio = speech.RecognitionAudio(
@@ -93,122 +53,57 @@ def transcribe(gcs_uri):
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=41800,
-        # audio_channel_count=2,
         language_code="en-US"
-=======
-=======
->>>>>>> fe0f2f09527010f2754e964d5834409297e25469
-    client = speech.SpeechClient()
-
-    audio = speech.RecognitionAudio(
-        uri=wav_file_bytes
-    )
-    config = speech.RecognitionConfig(
-        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=44100,
-        language_code="en-US",
-<<<<<<< HEAD
->>>>>>> fe0f2f0... beginning transcribe()
-=======
->>>>>>> fe0f2f09527010f2754e964d5834409297e25469
     )
 
     operation = client.long_running_recognize(config=config, audio=audio)
 
     print("Waiting for operation to complete...")
-<<<<<<< HEAD
-<<<<<<< HEAD
     response = operation.result()
-=======
-    response = operation.result(timeout=300)
->>>>>>> fe0f2f0... beginning transcribe()
-=======
-    response = operation.result(timeout=300)
->>>>>>> fe0f2f09527010f2754e964d5834409297e25469
 
     # Each result is for a consecutive portion of the audio. Iterate through
     # them to get the transcripts for the entire audio file.
     num_results = 0
     average_confidence = 0
     final_string = ""
-<<<<<<< HEAD
-<<<<<<< HEAD
-    print("----------------")
-    print(response)
-    print("----------------")
-    for result in response.results:
-        best_alternative = result.alternatives[0]
-
-        
-        transcript = best_alternative.transcript
-        print("----------------")
-        print(transcript)
-        final_string += " " + transcript
-=======
-=======
->>>>>>> fe0f2f09527010f2754e964d5834409297e25469
     for result in response.results:
         best_alternative = result.alternatives[0]
 
         transcript = best_alternative.transcript
         final_string += " " + transcript
 
-<<<<<<< HEAD
->>>>>>> fe0f2f0... beginning transcribe()
-=======
->>>>>>> fe0f2f09527010f2754e964d5834409297e25469
         confidence = best_alternative.confidence
         num_results += 1
         average_confidence += confidence
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    # for result in response.results:
-    #     best_alternative = result.alternatives[0]
-    #     transcript = best_alternative.transcript
-    #     confidence = best_alternative.confidence
-    #     print("-" * 80)
-    #     print(f"Transcript: {transcript}")
-    #     print(f"Confidence: {confidence:.0%}")
-
-    # print("************")
-    # best_alternative = response.results[0].alternatives[0]
-    # print(best_alternative)
-    # best_alternative = response.results[1].alternatives[0]
-    # print(best_alternative)
-    # transcript = best_alternative.transcript
-    # print("************") 
     result = {
         "final_string": final_string,
         "confidence": 10
     }
 
-    # print(f"Transcript: {final_string}")
-    # print(f"Confidence: {average_confidence/num_results:.0%}")
     return result
 
 
 def upload_blob(source_file_name, destination_blob_name, b64text):
-    print(len(b64text))
-    wav_file_bytes = base64.b64decode(b64text)
-    # wav_file_bytes = wav_file_bytes.encode("utf-8")
-    # wave_file = wave.open(source_file_name, "rb")
-    # wave_file.rewind()
-    # wave_file.close()
+    last2char = b64text[len(b64text) - 2]
+    if last2char == "==":
+        wav_file_bytes = base64.b64decode(b64text)
+    elif "=" in last2char:
+        wav_file_bytes = base64.b64decode(b64text + "=")
+    else:
+        wav_file_bytes = base64.b64decode(b64text + "==")
 
     if os.path.exists(source_file_name):
         os.remove(source_file_name)
-    
+
     wave_file = wave.open(source_file_name, "wb")
     wave_file.setnchannels(1)
     wave_file.setsampwidth(2)
-    wave_file.setframerate(44100)
+    wave_file.setframerate(41800)
     wave_file.writeframesraw(wav_file_bytes)
 
     """Uploads a file to the bucket."""
     bucket_name = "moodivity-speechfiles"
-    # source_file_name = source_file_name
-    # destination_blob_name = destination_blob_name
 
     storage_client = storage.Client.from_service_account_json(settings.KEY_DIR)
     bucket = storage_client.bucket(bucket_name)
@@ -225,22 +120,8 @@ def upload_blob(source_file_name, destination_blob_name, b64text):
     wave_file.close()
 
     # return transcribe("gs://moodivity-speechfiles/"+destination_blob_name)
-    return transcribe("gs://moodivity-speechfiles/mlk.wav")
+    return transcribe("gs://moodivity-speechfiles/" + destination_blob_name)
 
-=======
-=======
->>>>>>> fe0f2f09527010f2754e964d5834409297e25469
-        result = {
-            "final_string": final_string,
-            "confidence": average_confidence/num_results
-        }
-
-        return result
-
-    print(f"Transcript: {final_string}")
-    print(f"Confidence: {average_confidence/num_results:.0%}")
-<<<<<<< HEAD
->>>>>>> fe0f2f0... beginning transcribe()
 
 class UserLogsCreateView(views.APIView):
 
@@ -250,32 +131,19 @@ class UserLogsCreateView(views.APIView):
 
     def get(self, request, pk=None):
         queryset = UserLogs.objects.filter(owner=self.request.user)
-=======
-
-class UserLogsCreateView(views.APIView):
-
-    def get(self, request, pk=None):
-        queryset = UserLogs.objects.all()
->>>>>>> fe0f2f09527010f2754e964d5834409297e25469
         serializer = UserLogsSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request, pk=None):
-<<<<<<< HEAD
-<<<<<<< HEAD
         dictTemp = {
-            "mood" : "",
-            "date" : "",
-            "log" : "",
-            "analysis" : "",
-            "owner" : 0,
-            "goalStatus" : 0
+            "mood": "",
+            "date": "",
+            "log": "",
+            "analysis": "",
+            "owner": 0,
+            "goalStatus": 0
         }
         text = upload_blob("speech3.wav", "ryanasd.wav", request.data["audio"])
-=======
-        dictTemp = request.data
-        text = transcribe(dictTemp["audio"])
->>>>>>> fe0f2f0... beginning transcribe()
         mood = sentiment(text["final_string"])
         dictTemp["mood"] = mood
         dictTemp["analysis"] = analyze(mood)
@@ -283,14 +151,6 @@ class UserLogsCreateView(views.APIView):
         dictTemp["log"] = text["final_string"]
         dictTemp["owner"] = request.data["owner"]
         dictTemp["goalStatus"] = request.data["goalStatus"]
-=======
-        dictTemp = request.data
-        text = transcribe(dictTemp["audio"])
-        mood = sentiment(text["final_string"])
-        dictTemp["mood"] = mood
-        analysis = analyze(mood)
-        dictTemp["analysis"] = analysis
->>>>>>> fe0f2f09527010f2754e964d5834409297e25469
         serializer = UserLogsSerializer(data=dictTemp)
         if serializer.is_valid():
             serializer.save()
@@ -300,12 +160,8 @@ class UserLogsCreateView(views.APIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
-<<<<<<< HEAD
         queryInit = UserLogs.objects.filter(owner=self.request.user)
         profile = queryInit.get(pk=pk)
-=======
-        profile = UserLogs.objects.get(pk=pk)
->>>>>>> fe0f2f09527010f2754e964d5834409297e25469
         serializer = UserLogsSerializer(profile, request.data)
         if serializer.is_valid():
             serializer.save()
@@ -315,10 +171,6 @@ class UserLogsCreateView(views.APIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-<<<<<<< HEAD
         queryInit = UserLogs.objects.filter(owner=self.request.user)
         queryInit.get(pk=pk).delete()
-=======
-        UserLogs.objects.filter(pk=pk).delete()
->>>>>>> fe0f2f09527010f2754e964d5834409297e25469
-        return Response({ "Success": "true"})
+        return Response({"Success": "true"})

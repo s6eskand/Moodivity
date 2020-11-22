@@ -24,7 +24,7 @@ function Log(props) {
 
     useEffect(() => {
         props.getUserLogs();
-    }, [props.userLogs]);
+    }, []);
 
     return(
         <div className="main-logs">
@@ -32,8 +32,9 @@ function Log(props) {
                 <LogCard
                     status={log.goalStatus}
                     date={log.date}
-                    score={log.score}
-                    color={MOODS[log.analysis]}
+                    score={log.mood}
+                    color={MOODS[log.analysis].color}
+                    explanation={MOODS[log.analysis].text}
                     log={log.log}
                 />
             ))}

@@ -41,9 +41,10 @@ function* logoutRequest() {
 
 function* authLogin(action) {
     try {
-        const response = yield call(() => postRequest(postRequest(SERVER.LOGIN, action.loginInfo)));
+        const response = yield call(() => postRequest(SERVER.LOGIN, action.loginInfo));
         if (response.status === 200) {
             localStorage.setItem('token', response.data.token);
+            yield put(storeOwner(response.data.user.id));
             yield put(storeToken(response.data.token, true))
         }
     } catch {
@@ -53,22 +54,10 @@ function* authLogin(action) {
 
 function* authRegister(action) {
     try {
-        const response = yield call(() => postRequest(postRequest(SERVER.REGISTER, action.registerInfo)));
+        const response = yield call(() => postRequest(SERVER.REGISTER, action.registerInfo));
         if (response.status === 200) {
             localStorage.setItem('token', response.data.token);
             yield put(storeOwner(response.data.user.id));
-            const profileAction = {
-                type: CREATE_USER_PROFILE,
-                profileInfo: {
-                    name: response.data.user.username,
-                    startTime: "00:00",
-                    endTime: "00:00",
-                    prodGoal: 1,
-                    activities: [],
-                    owner: response.data.user.id
-                }
-            };
-            yield call(() => createUserProfile(profileAction));
             yield put(storeToken(response.data.token, true));
         }
     } catch {

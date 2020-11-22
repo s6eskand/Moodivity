@@ -7,6 +7,7 @@ import argparse
 from google.cloud import language_v1
 from django.conf import settings
 
+
 class UserProfileListCreateView(views.APIView):
 
     permission_classes = [
