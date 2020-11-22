@@ -25,7 +25,7 @@ These logs are transcribed and analyzed using powerful Machine Learning models, 
   * Redux-Sagas
     * Library used for asynchronous requests and complex state management
     
-__Backend and Frontend connected through REST API__
+___Backend and Frontend connected through REST API___
     
 ***Backend***
   * Django
