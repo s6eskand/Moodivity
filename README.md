@@ -25,11 +25,15 @@ These logs are transcribed and analyzed using powerful Machine Learning models, 
   * Redux-Sagas
     * Library used for asynchronous requests and complex state management
     
+__Backend and Frontend connected through REST API___
+    
 ***Backend***
   * Django
     * Backend framework the application was written in
   * Python
     * Language the backend was written in
+  * Django Rest Framework
+    * built in library to connect backend to frontend
   * Google Cloud API
     * Speech To Text API for audio transcription
     * NLP Sentiment Analysis for mood analysis of transcription
@@ -41,6 +45,6 @@ These logs are transcribed and analyzed using powerful Machine Learning models, 
     
 ### How it Works
 
-A user will record an audio log, which is then posted to the Google Cloud Storage for secure storage, read from storage and converted to text using Google's Speech to Text API, and then analyzed using Google's NLP sentiment analysis API.
+A user will record an audio log which is posted to the Django Server through a connected REST API. The posted audio file will be stored in the Google Cloud Storage for secure storage, read from storage and converted to text using Google's Speech to Text API, and then analyzed using Google's NLP sentiment analysis API.
 
 Once the log is analyzed, the logs are displayed on the users dashboard, allowing them to reflect on their sentiment, and how it relates to their set goal.
