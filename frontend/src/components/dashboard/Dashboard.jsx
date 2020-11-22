@@ -15,7 +15,7 @@ function Dashboard(props) {
 
     const handleTabChange = (e, newValue) => {
         if (newValue === 3) {
-            console.log(true)
+            props.authLogout()
         } else {
             setState({
                 ...state,

@@ -31,12 +31,13 @@ import {
 } from "../../../redux/actions/logs";
 import {
     editUserProfile,
-    getUserProfile
+    getUserProfile,
+    createUserProfile
 } from "../../../redux/actions/profile";
 import {
     ownerSelector,
 } from "../../../redux/selectors/auth";
-import {userProfileSelector} from "../../../redux/selectors/profile";
+import {hasBeenCreatedSelector, userProfileSelector} from "../../../redux/selectors/profile";
 
 function Profile(props) {
     const [state, setState] = useState({
@@ -60,7 +61,7 @@ function Profile(props) {
             endTime: props.userProfile.endTime,
             prodGoal: props.userProfile.prodGoal,
         })
-    }, [props.userProfile]);
+    }, []);
 
     const handleChange = (e) => {
         setState({
@@ -75,27 +76,32 @@ function Profile(props) {
                 ...state,
                 isEdit: true,
                 count: 1,
-                activitiesString: state.activities.join(',')
+                activitiesString: state.activities ? state.activities.join(',') : ''
             })
         } else {
+            const activities = [...state.activitiesString.split(',')]
             setState({
                 ...state,
                 isEdit: false,
                 count: 0,
-                activities: state.activitiesString.split(',')
+                activities: [...state.activitiesString.split(',')]
             });
 
             const data = {
-                id: props.userProfile.id,
                 name: state.name,
-                activities: state.activities,
+                activities: activities,
                 startTime: state.startTime,
                 prodGoal: state.prodGoal,
                 owner: props.owner,
             };
 
-            props.setGoalStatus(state.prodGoal);
-            props.editUserProfile(data);
+            if (props.hasBeenCreated) {
+                props.editUserProfile({id: props.userProfile.id, ...data});
+            } else {
+                props.setGoalStatus(state.prodGoal);
+                props.createUserProfile(data)
+            }
+
         }
     };
 
@@ -182,9 +188,9 @@ function Profile(props) {
                     />
                     :
                     <div style={{width: '400'}}>
-                        {state.activities.map(activity => (
+                        {state.activities ? state.activities.map(activity => (
                             <Button variant="outlined" style={{width: 'auto', margin: '5px'}}>{activity}</Button>
-                        ))}
+                        )) : null}
                     </div>
                 }
             </div>
@@ -205,12 +211,14 @@ function Profile(props) {
 const mapStateToProps = (state) => ({
     owner: ownerSelector(state),
     userProfile: userProfileSelector(state),
+    hasBeenCreated: hasBeenCreatedSelector(state),
 });
 
 const actionCreators = {
     editUserProfile,
     getUserProfile,
     setGoalStatus,
+    createUserProfile,
 };
 
 export default withShipment({

@@ -77,6 +77,12 @@ function Audio(props) {
             })
         };
     };
+
+    const handleClose = () => {
+        props.handleCheckClose();
+        props.handleClose();
+    };
+
     return (
         <>
             <Dialog maxWidth="lg" className="dialog-main" open={props.open}>
@@ -115,7 +121,7 @@ function Audio(props) {
                     <Button
                         variant="outlined"
                         color="secondary"
-                        onClick={props.handleClose}
+                        onClick={handleClose}
                     >
                         Not today
                 </Button>

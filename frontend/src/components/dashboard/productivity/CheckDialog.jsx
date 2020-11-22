@@ -27,8 +27,8 @@ function CheckDialog(props) {
     const handleOpen = () => {
         setGoalStatus(props.time);
         props.handleReset();
-        props.handleOpen();
         props.handleClose();
+        props.handleOpen();
     };
 
     return(

@@ -24,7 +24,7 @@ function Log(props) {
 
     useEffect(() => {
         props.getUserLogs();
-    }, [props.userLogs]);
+    }, []);
 
     return(
         <div className="main-logs">

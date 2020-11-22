@@ -6,6 +6,7 @@ import {
 import axios from 'axios';
 
 import {
+    isProfile,
     storeUserProfile
 } from "../../actions/profile";
 
@@ -57,7 +58,8 @@ function* getUserProfile(action) {
 function* createUserProfile(action) {
     try {
         const response = yield call(() => postRequest(SERVER.PROFILE, action.profileInfo));
-        yield put(storeUserProfile(response.data))
+        yield put(storeUserProfile(response.data));
+        yield put(isProfile());
     } catch {
         console.log('Error')
     }
