@@ -14,7 +14,15 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+KEY_DIR = os.path.join(BASE_DIR,'backend', 'Moodivity-fb12d231d9c7.json')
 
+print("**************")
+print(BASE_DIR)
+print("**************")
+
+print("**************")
+print(KEY_DIR)
+print("**************")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -42,6 +50,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'accounts',
     'userprofile',
+    'userlogs'
 ]
 
 MIDDLEWARE = [
@@ -82,9 +91,9 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'lymncetz',
-        'USER': 'lymncetz',
-        'PASSWORD':'95Y55DLpj8JeCguXza8Ry8HpLF03IT80',
+        'NAME': 'qqyhrxby',
+        'USER': 'qqyhrxby',
+        'PASSWORD':'FcgQSIdEq3Kg53DwsjYsdnliv6MubpYU',
         'HOST':'suleiman.db.elephantsql.com',
         'PORT':'5432'
     }
@@ -131,9 +140,9 @@ STATIC_URL = '/static/'
 
 # permissions.AllowAny must be enabled or else you will get a 403 error on method requests
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-         'rest_framework.permissions.AllowAny',
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'knox.auth.TokenAuthentication',
+    )
 }
 
 # Cors configuration permissions
