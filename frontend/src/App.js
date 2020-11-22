@@ -13,7 +13,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter } from "react-router-dom";
 
 // custom components
-import Homepage from "./components/homepage/Homepage";
+import Base from "./base/Base";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <BrowserRouter>
-                    <Homepage/>
+                    <Base />
                 </BrowserRouter>
             </PersistGate>
         </Provider>

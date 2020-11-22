@@ -1,0 +1,28 @@
+
+.main-timer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer-text {
+    width: 505px;
+    font-size: 100px;
+}
+
+#start-btn {
+    color: #41be7a;
+    margin-right: 10px;
+    width: auto;
+}
+
+#pause-btn {
+    margin-right: 10px;
+    width: auto;
+}
+
+#stop-btn {
+    color: #FD564F;
+    width: auto;
+}

@@ -1,0 +1,18 @@
+
+.main {
+    margin-left: 290px;
+}
+
+.title {
+    margin-bottom: 20px;
+    font-size: 50px;
+}
+
+.main-content {
+    border: 2px solid black;
+    padding: 50px;
+    width: 80%;
+    border-radius: 24px;
+    height: auto;
+    background-image: linear-gradient(to bottom, #a6e4fe, #c5e9ff, #e0eeff, #f3f6ff, #ffffff);
+}
