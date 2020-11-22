@@ -56,6 +56,17 @@ def sentiment(content):
 def transcribe(gcs_uri):
     """Asynchronously transcribes the audio file specified by the gcs_uri."""
 
+<<<<<<< HEAD
+=======
+    wav_file_bytes = base64.b64decode(gcs_uri)
+    # wav_file_bytes = wav_file_bytes.encode("utf-8")
+    # wave_file = wave.open("speech.wav", "wb")
+    # wave_file.setnchannels(1)
+    # wave_file.setsampwidth(2)
+    # wave_file.setframerate(44100)
+    # wave_file.writeframesraw(wav_file_bytes)
+
+>>>>>>> fe0f2f0... beginning transcribe()
     # wave_file_bytes2 = base64.b64decode(wave_file)
 
     # base64_img_bytes = gcs_uri.encode('utf-8')
@@ -66,6 +77,7 @@ def transcribe(gcs_uri):
     #     decoded_image_data = base64.decodebytes(base64_img_bytes)
     #     file_to_save.write(decoded_image_data)
 
+<<<<<<< HEAD
     client = speech.SpeechClient.from_service_account_json(settings.KEY_DIR)
 
     audio = speech.RecognitionAudio(
@@ -76,18 +88,34 @@ def transcribe(gcs_uri):
         sample_rate_hertz=41800,
         # audio_channel_count=2,
         language_code="en-US"
+=======
+    client = speech.SpeechClient()
+
+    audio = speech.RecognitionAudio(
+        uri=wav_file_bytes
+    )
+    config = speech.RecognitionConfig(
+        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+        sample_rate_hertz=44100,
+        language_code="en-US",
+>>>>>>> fe0f2f0... beginning transcribe()
     )
 
     operation = client.long_running_recognize(config=config, audio=audio)
 
     print("Waiting for operation to complete...")
+<<<<<<< HEAD
     response = operation.result()
+=======
+    response = operation.result(timeout=300)
+>>>>>>> fe0f2f0... beginning transcribe()
 
     # Each result is for a consecutive portion of the audio. Iterate through
     # them to get the transcripts for the entire audio file.
     num_results = 0
     average_confidence = 0
     final_string = ""
+<<<<<<< HEAD
     print("----------------")
     print(response)
     print("----------------")
@@ -99,10 +127,19 @@ def transcribe(gcs_uri):
         print("----------------")
         print(transcript)
         final_string += " " + transcript
+=======
+    for result in response.results:
+        best_alternative = result.alternatives[0]
+
+        transcript = best_alternative.transcript
+        final_string += " " + transcript
+
+>>>>>>> fe0f2f0... beginning transcribe()
         confidence = best_alternative.confidence
         num_results += 1
         average_confidence += confidence
 
+<<<<<<< HEAD
     # for result in response.results:
     #     best_alternative = result.alternatives[0]
     #     transcript = best_alternative.transcript
@@ -167,6 +204,17 @@ def upload_blob(source_file_name, destination_blob_name, b64text):
     # return transcribe("gs://moodivity-speechfiles/"+destination_blob_name)
     return transcribe("gs://moodivity-speechfiles/mlk.wav")
 
+=======
+        result = {
+            "final_string": final_string,
+            "confidence": average_confidence/num_results
+        }
+
+        return result
+
+    print(f"Transcript: {final_string}")
+    print(f"Confidence: {average_confidence/num_results:.0%}")
+>>>>>>> fe0f2f0... beginning transcribe()
 
 class UserLogsCreateView(views.APIView):
 
@@ -180,6 +228,7 @@ class UserLogsCreateView(views.APIView):
         return Response(serializer.data)
 
     def post(self, request, pk=None):
+<<<<<<< HEAD
         dictTemp = {
             "mood" : "",
             "date" : "",
@@ -189,6 +238,10 @@ class UserLogsCreateView(views.APIView):
             "goalStatus" : 0
         }
         text = upload_blob("speech3.wav", "ryanasd.wav", request.data["audio"])
+=======
+        dictTemp = request.data
+        text = transcribe(dictTemp["audio"])
+>>>>>>> fe0f2f0... beginning transcribe()
         mood = sentiment(text["final_string"])
         dictTemp["mood"] = mood
         dictTemp["analysis"] = analyze(mood)
