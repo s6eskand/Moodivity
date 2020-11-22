@@ -57,7 +57,10 @@ def transcribe(gcs_uri):
     """Asynchronously transcribes the audio file specified by the gcs_uri."""
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> fe0f2f09527010f2754e964d5834409297e25469
     wav_file_bytes = base64.b64decode(gcs_uri)
     # wav_file_bytes = wav_file_bytes.encode("utf-8")
     # wave_file = wave.open("speech.wav", "wb")
@@ -66,7 +69,10 @@ def transcribe(gcs_uri):
     # wave_file.setframerate(44100)
     # wave_file.writeframesraw(wav_file_bytes)
 
+<<<<<<< HEAD
 >>>>>>> fe0f2f0... beginning transcribe()
+=======
+>>>>>>> fe0f2f09527010f2754e964d5834409297e25469
     # wave_file_bytes2 = base64.b64decode(wave_file)
 
     # base64_img_bytes = gcs_uri.encode('utf-8')
@@ -77,6 +83,7 @@ def transcribe(gcs_uri):
     #     decoded_image_data = base64.decodebytes(base64_img_bytes)
     #     file_to_save.write(decoded_image_data)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     client = speech.SpeechClient.from_service_account_json(settings.KEY_DIR)
 
@@ -89,6 +96,8 @@ def transcribe(gcs_uri):
         # audio_channel_count=2,
         language_code="en-US"
 =======
+=======
+>>>>>>> fe0f2f09527010f2754e964d5834409297e25469
     client = speech.SpeechClient()
 
     audio = speech.RecognitionAudio(
@@ -98,23 +107,31 @@ def transcribe(gcs_uri):
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=44100,
         language_code="en-US",
+<<<<<<< HEAD
 >>>>>>> fe0f2f0... beginning transcribe()
+=======
+>>>>>>> fe0f2f09527010f2754e964d5834409297e25469
     )
 
     operation = client.long_running_recognize(config=config, audio=audio)
 
     print("Waiting for operation to complete...")
 <<<<<<< HEAD
+<<<<<<< HEAD
     response = operation.result()
 =======
     response = operation.result(timeout=300)
 >>>>>>> fe0f2f0... beginning transcribe()
+=======
+    response = operation.result(timeout=300)
+>>>>>>> fe0f2f09527010f2754e964d5834409297e25469
 
     # Each result is for a consecutive portion of the audio. Iterate through
     # them to get the transcripts for the entire audio file.
     num_results = 0
     average_confidence = 0
     final_string = ""
+<<<<<<< HEAD
 <<<<<<< HEAD
     print("----------------")
     print(response)
@@ -128,17 +145,23 @@ def transcribe(gcs_uri):
         print(transcript)
         final_string += " " + transcript
 =======
+=======
+>>>>>>> fe0f2f09527010f2754e964d5834409297e25469
     for result in response.results:
         best_alternative = result.alternatives[0]
 
         transcript = best_alternative.transcript
         final_string += " " + transcript
 
+<<<<<<< HEAD
 >>>>>>> fe0f2f0... beginning transcribe()
+=======
+>>>>>>> fe0f2f09527010f2754e964d5834409297e25469
         confidence = best_alternative.confidence
         num_results += 1
         average_confidence += confidence
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     # for result in response.results:
     #     best_alternative = result.alternatives[0]
@@ -205,6 +228,8 @@ def upload_blob(source_file_name, destination_blob_name, b64text):
     return transcribe("gs://moodivity-speechfiles/mlk.wav")
 
 =======
+=======
+>>>>>>> fe0f2f09527010f2754e964d5834409297e25469
         result = {
             "final_string": final_string,
             "confidence": average_confidence/num_results
@@ -214,6 +239,7 @@ def upload_blob(source_file_name, destination_blob_name, b64text):
 
     print(f"Transcript: {final_string}")
     print(f"Confidence: {average_confidence/num_results:.0%}")
+<<<<<<< HEAD
 >>>>>>> fe0f2f0... beginning transcribe()
 
 class UserLogsCreateView(views.APIView):
@@ -224,10 +250,18 @@ class UserLogsCreateView(views.APIView):
 
     def get(self, request, pk=None):
         queryset = UserLogs.objects.filter(owner=self.request.user)
+=======
+
+class UserLogsCreateView(views.APIView):
+
+    def get(self, request, pk=None):
+        queryset = UserLogs.objects.all()
+>>>>>>> fe0f2f09527010f2754e964d5834409297e25469
         serializer = UserLogsSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request, pk=None):
+<<<<<<< HEAD
 <<<<<<< HEAD
         dictTemp = {
             "mood" : "",
@@ -249,6 +283,14 @@ class UserLogsCreateView(views.APIView):
         dictTemp["log"] = text["final_string"]
         dictTemp["owner"] = request.data["owner"]
         dictTemp["goalStatus"] = request.data["goalStatus"]
+=======
+        dictTemp = request.data
+        text = transcribe(dictTemp["audio"])
+        mood = sentiment(text["final_string"])
+        dictTemp["mood"] = mood
+        analysis = analyze(mood)
+        dictTemp["analysis"] = analysis
+>>>>>>> fe0f2f09527010f2754e964d5834409297e25469
         serializer = UserLogsSerializer(data=dictTemp)
         if serializer.is_valid():
             serializer.save()
@@ -258,8 +300,12 @@ class UserLogsCreateView(views.APIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
+<<<<<<< HEAD
         queryInit = UserLogs.objects.filter(owner=self.request.user)
         profile = queryInit.get(pk=pk)
+=======
+        profile = UserLogs.objects.get(pk=pk)
+>>>>>>> fe0f2f09527010f2754e964d5834409297e25469
         serializer = UserLogsSerializer(profile, request.data)
         if serializer.is_valid():
             serializer.save()
@@ -269,6 +315,10 @@ class UserLogsCreateView(views.APIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
+<<<<<<< HEAD
         queryInit = UserLogs.objects.filter(owner=self.request.user)
         queryInit.get(pk=pk).delete()
+=======
+        UserLogs.objects.filter(pk=pk).delete()
+>>>>>>> fe0f2f09527010f2754e964d5834409297e25469
         return Response({ "Success": "true"})
