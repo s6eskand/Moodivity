@@ -15,7 +15,7 @@ These logs are transcribed and analyzed using powerful Machine Learning models, 
 
 ### Tech Stack
 
-***Frontend***
+**Frontend**
   * React
     * UI framework the application was written in
   * JavaScript
@@ -27,7 +27,7 @@ These logs are transcribed and analyzed using powerful Machine Learning models, 
     
 ___Backend and Frontend connected through REST API___
     
-***Backend***
+**Backend**
   * Django
     * Backend framework the application was written in
   * Python
@@ -39,7 +39,7 @@ ___Backend and Frontend connected through REST API___
     * NLP Sentiment Analysis for mood analysis of transcription
     * Google Cloud Storage to store audio files recorded by users
 
-***Database***
+**Database**
   * PostgreSQL
     * used for data storage of Users, Logs, Profiles, etc.
     
