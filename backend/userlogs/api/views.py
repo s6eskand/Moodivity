@@ -1,5 +1,6 @@
 from rest_framework import views, status
 from rest_framework.response import Response
+from rest_framework import permissions
 from .serializers import UserLogsSerializer
 from ..models import UserLogs
 import argparse
@@ -50,8 +51,12 @@ def sentiment(content):
 
 class UserLogsCreateView(views.APIView):
 
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
     def get(self, request, pk=None):
-        queryset = UserLogs.objects.all()
+        queryset = UserLogs.objects.filter(owner=self.request.user)
         serializer = UserLogsSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -70,7 +75,8 @@ class UserLogsCreateView(views.APIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
-        profile = UserLogs.objects.get(pk=pk)
+        queryInit = UserLogs.objects.filter(owner=self.request.user)
+        profile = queryInit.get(pk=pk)
         serializer = UserLogsSerializer(profile, request.data)
         if serializer.is_valid():
             serializer.save()
@@ -80,5 +86,6 @@ class UserLogsCreateView(views.APIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        UserLogs.objects.filter(pk=pk).delete()
+        queryInit = UserLogs.objects.filter(owner=self.request.user)
+        queryInit.get(pk=pk).delete()
         return Response({ "Success": "true"})

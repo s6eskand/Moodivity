@@ -140,9 +140,9 @@ STATIC_URL = '/static/'
 
 # permissions.AllowAny must be enabled or else you will get a 403 error on method requests
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-         'rest_framework.permissions.AllowAny',
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'knox.auth.TokenAuthentication',
+    )
 }
 
 # Cors configuration permissions
