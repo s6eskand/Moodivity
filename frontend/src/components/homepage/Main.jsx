@@ -14,8 +14,8 @@ import {
 function Main() {
 
     return(
-        <div className="main container">
-            <div className="main-content">
+        <div className="main-homepage container">
+            <div className="main-content-homepage">
                 <div className="main-content-text">
                     <h1 className="main-content-slogan">
                         Increase productivity. <br/>

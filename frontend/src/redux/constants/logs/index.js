@@ -1,0 +1,5 @@
+export const GET_USER_LOGS = "GET_USER_LOGS";
+export const CREATE_USER_LOG = "CREATE_USER_LOG";
+export const STORE_USER_LOGS = "STORE_USER_LOGS";
+export const SET_LOADING = "SET_LOADING";
+export const SET_GOAL_STATUS = "SET_GOAL_STATUS";

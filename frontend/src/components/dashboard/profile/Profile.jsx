@@ -24,6 +24,20 @@ import {
     Edit
 } from "@material-ui/icons";
 
+// redux
+import withShipment from "../../../withShipment";
+import {
+    setGoalStatus
+} from "../../../redux/actions/logs";
+import {
+    editUserProfile,
+    getUserProfile
+} from "../../../redux/actions/profile";
+import {
+    ownerSelector,
+} from "../../../redux/selectors/auth";
+import {userProfileSelector} from "../../../redux/selectors/profile";
+
 function Profile(props) {
     const [state, setState] = useState({
         isEdit: false,
@@ -35,6 +49,18 @@ function Profile(props) {
         endTime: '00:00',
         prodGoal: 1
     });
+
+    useEffect(() => {
+        props.getUserProfile();
+        setState({
+            ...state,
+            name: props.userProfile.name,
+            activities: props.userProfile.activities,
+            startTime: props.userProfile.startTime,
+            endTime: props.userProfile.endTime,
+            prodGoal: props.userProfile.prodGoal,
+        })
+    }, [props.userProfile]);
 
     const handleChange = (e) => {
         setState({
@@ -57,7 +83,19 @@ function Profile(props) {
                 isEdit: false,
                 count: 0,
                 activities: state.activitiesString.split(',')
-            })
+            });
+
+            const data = {
+                id: props.userProfile.id,
+                name: state.name,
+                activities: state.activities,
+                startTime: state.startTime,
+                prodGoal: state.prodGoal,
+                owner: props.owner,
+            };
+
+            props.setGoalStatus(state.prodGoal);
+            props.editUserProfile(data);
         }
     };
 
@@ -164,4 +202,18 @@ function Profile(props) {
 
 }
 
-export default Profile;
+const mapStateToProps = (state) => ({
+    owner: ownerSelector(state),
+    userProfile: userProfileSelector(state),
+});
+
+const actionCreators = {
+    editUserProfile,
+    getUserProfile,
+    setGoalStatus,
+};
+
+export default withShipment({
+    mapStateToProps,
+    actionCreators,
+}, Profile);

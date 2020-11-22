@@ -10,7 +10,7 @@ import brain from '../../media/images/mental_health_brain.png';
 function About() {
 
     return(
-        <div className="main container">
+        <div className="main-about container">
             <div className="main-content-text-1">
                 <div className="text-block">
                     <h1>What does it do?</h1>

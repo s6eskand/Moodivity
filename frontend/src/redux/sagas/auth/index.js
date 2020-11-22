@@ -7,6 +7,7 @@ import axios from 'axios';
 
 import {
     AUTH_LOGIN,
+    AUTH_LOGOUT,
     AUTH_REGISTER,
 } from "../../constants/auth";
 import {
@@ -14,11 +15,27 @@ import {
 } from "../../constants/endpoints";
 
 import {
+    CREATE_USER_PROFILE
+} from "../../constants/profile";
+import {
+    createUserProfile,
+} from "../../actions/profile";
+import {
+    storeOwner,
     storeToken,
 } from "../../actions/auth";
 
 function* postRequest(endpoint, data) {
     return yield axios.post(endpoint, data)
+        .then(response => response);
+}
+
+function* logoutRequest() {
+    return yield axios.post(SERVER.LOGOUT, {}, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem('token')}`
+        }
+    })
         .then(response => response);
 }
 
@@ -39,14 +56,39 @@ function* authRegister(action) {
         const response = yield call(() => postRequest(postRequest(SERVER.REGISTER, action.registerInfo)));
         if (response.status === 200) {
             localStorage.setItem('token', response.data.token);
-            yield put(storeToken(response.data.token, true))
+            yield put(storeOwner(response.data.user.id));
+            const profileAction = {
+                type: CREATE_USER_PROFILE,
+                profileInfo: {
+                    name: response.data.user.username,
+                    startTime: "00:00",
+                    endTime: "00:00",
+                    prodGoal: 1,
+                    activities: [],
+                    owner: response.data.user.id
+                }
+            };
+            yield call(() => createUserProfile(profileAction));
+            yield put(storeToken(response.data.token, true));
         }
     } catch {
-        console.log("Error")
+        console.log("Error");
     }
 }
+
+function* authLogout(action) {
+    try {
+        const response = yield call(() => logoutRequest());
+        localStorage.clear();
+        yield put(storeToken(null, false));
+    } catch {
+        console.log("Error");
+    }
+}
+
 
 export default function* authSagas() {
     yield takeLatest(AUTH_LOGIN, authLogin);
     yield takeLatest(AUTH_REGISTER, authRegister);
+    yield takeLatest(AUTH_LOGOUT, authLogout);
 }

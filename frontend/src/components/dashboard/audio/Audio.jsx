@@ -15,33 +15,45 @@ import {
 
 // material icons
 import {
-    PlayCircleOutline,
+    Mic,
     Stop
 } from "@material-ui/icons";
+
+// redux
+import withShipment from "../../../withShipment";
+import {
+    createUserLog,
+} from "../../../redux/actions/logs";
+import {
+    goalStatusSelector,
+    loadingSelector,
+} from "../../../redux/selectors/logs";
+import {ownerSelector} from "../../../redux/selectors/auth";
 
 function Audio(props) {
     const [state, setState] = useState({
         audio: {},
         base64audio: '',
         recording: RecordState.NONE,
+        isRecording: false,
     });
 
     const handleSubmit = () => {
-        const reader = new FileReader;
-        reader.readAsDataURL(state.audio.blob);
-        reader.onload = function(e) {
-            const base64audio = reader.result;
-            setState({
-                ...state,
-                base64audio,
-            })
+        const data = {
+            owner: props.owner,
+            audio: state.base64audio,
+            goalStatus: props.goalStatus,
         };
+
+        props.createUserLog(data);
+        props.handleClose()
     };
 
     const handleStart = () => {
         setState({
             ...state,
-            recording: RecordState.START
+            recording: RecordState.START,
+            isRecording: true,
         })
     };
 
@@ -49,23 +61,29 @@ function Audio(props) {
         setState({
             ...state,
             recording: RecordState.STOP,
+            isRecording: false,
         });
     };
 
     const handleData = (audio) => {
-        setState({
-            ...state,
-            audio: audio
-        })
+        const reader = new FileReader;
+        reader.readAsDataURL(audio.blob);
+        reader.onload = function(e) {
+            const base64audio = reader.result;
+            setState({
+                ...state,
+                base64audio,
+                audio: audio
+            })
+        };
     };
 
-    console.log(state);
     return(
         <>
-        <Dialog maxWidth="lg" className="dialog-main" open={props.open || true}>
-            <DialogTitle>{props.title}</DialogTitle>
+        <Dialog maxWidth="lg" className="dialog-main" open={props.open}>
+            <DialogTitle>Record an audio log</DialogTitle>
             <DialogContent>
-                <DialogContentText>{props.description}</DialogContentText>
+                <DialogContentText>Record a reflection and our powerful AI will analyze your mood, providing feedback based off your sentiment and goal progress</DialogContentText>
                 <div>
                     <p>Hit start to record an audio log, reflecting on your day</p>
                     <div className="audio-outline">
@@ -78,18 +96,21 @@ function Audio(props) {
                     <Button
                         id="start-btn"
                         onClick={handleStart}
+                        disabled={state.isRecording}
                         variant="outlined"
                     >
-                        <PlayCircleOutline style={{paddingRight: '3px'}} /> Start
+                        <Mic style={{paddingRight: '3px'}} /> Start
                     </Button>
                     <Button
                         id="stop-btn"
                         onClick={handleStop}
                         variant="outlined"
+                        disabled={!state.isRecording}
                     >
                         <Stop style={{paddingRight: '3px'}} /> Stop
                     </Button>
                 </div>
+                <audio style={{marginTop: '10px'}} src={state.base64audio} controls/>
             </DialogContent>
             <DialogActions>
                 <Button
@@ -100,12 +121,12 @@ function Audio(props) {
                     Not today
                 </Button>
                 <Button
-                    disabled={state.audio.length === 0}
+                    disabled={state.base64audio.length === 0}
                     color="primary"
                     variant="outlined"
                     onClick={handleSubmit}
                 >
-                    Analyze log
+                    Analyze
                 </Button>
             </DialogActions>
         </Dialog>
@@ -114,4 +135,17 @@ function Audio(props) {
 
 }
 
-export default Audio;
+const mapStateToProps = (state) => ({
+    loading: loadingSelector(state),
+    goalStatus: goalStatusSelector(state),
+    owner: ownerSelector(state)
+});
+
+const actionCreators = {
+    createUserLog,
+};
+
+export default withShipment({
+    mapStateToProps,
+    actionCreators,
+}, Audio);

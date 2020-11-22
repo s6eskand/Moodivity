@@ -11,7 +11,7 @@ import Homepage from "../components/homepage/Homepage";
 import Dashboard from "../components/dashboard/Dashboard";
 
 function Base(props) {
-    return( props.isAuthenticated ? <Homepage/> : <Dashboard/> )
+    return( props.isAuthenticated ? <Dashboard /> : <Homepage /> )
 }
 
 const mapStateToProps = (state) => ({

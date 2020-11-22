@@ -57,7 +57,6 @@ function AuthDialog(props) {
 }
 
 const mapStateToProps = (state) => ({
-
 });
 
 const actionCreators = {

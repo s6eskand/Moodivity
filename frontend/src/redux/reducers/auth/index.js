@@ -1,5 +1,6 @@
 import {
     STORE_TOKEN,
+    STORE_OWNER,
 } from "../../constants/auth";
 import {
     AUTH_KEY
@@ -10,6 +11,7 @@ import { persistReducer } from "redux-persist";
 const initialState = {
     isAuthenticated: false,
     token: null,
+    owner: null,
 };
 
 const auth = (state = initialState, action) => {
@@ -19,6 +21,11 @@ const auth = (state = initialState, action) => {
                 ...state,
                 isAuthenticated: action.isAuthenticated,
                 token: action.token
+            };
+        case STORE_OWNER:
+            return {
+                ...state,
+                owner: action.owner
             };
         default:
             return state;

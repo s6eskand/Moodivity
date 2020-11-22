@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 
 // custom components
 import Audio from "../audio/Audio";
+import CheckDialog from "./CheckDialog";
 
 // styling
 import './Productivity.css';
@@ -24,8 +25,25 @@ function Productivity(props) {
         isActive: false,
         isPaused: false,
         isStopped: false,
+        openAudio: false,
+        openCheck: false,
     });
     const increment = useRef(null);
+
+    const handleAudioOpen = () => setState({...state, openAudio: true});
+
+    const handleAudioClose = () => setState({...state, openAudio: false});
+
+    const handleCheckOpen = () => {
+        clearInterval(increment.current);
+        setState({
+            ...state,
+            isPaused: true,
+            openCheck: true
+        });
+    };
+
+    const handleCheckClose = () => setState({...state, openCheck: false});
 
     const handleStart = () => {
         setState({
@@ -65,10 +83,23 @@ function Productivity(props) {
         return `${getHours} : ${getMinutes} : ${getSeconds}`
     };
 
+    const formatTimeToRemove = () => {
+        const hours = timer / 3600;
+        return Math.round(hours / 10) * 10
+    };
+
     return (
         <>
         <Audio
-
+            open={state.openAudio}
+            handleClose={handleAudioClose}
+        />
+        <CheckDialog
+            time={formatTimeToRemove()}
+            open={state.openCheck}
+            handleClose={handleCheckClose}
+            handleOpen={handleAudioOpen}
+            handleReset={handleReset}
         />
        <div className="main-timer">
            <h1 className="timer-text">{formatTime()}</h1>
@@ -92,7 +123,7 @@ function Productivity(props) {
                <Button
                    id="stop-btn"
                    disabled={!state.isActive}
-                   onClick={handleReset}
+                   onClick={handleCheckOpen}
                    variant="outlined"
                >
                    <Stop style={{paddingRight: '3px'}} /> Stop
