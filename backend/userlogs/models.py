@@ -3,10 +3,11 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class UserLogs(models.Model):
-    mood = models.CharField(max_length=200, blank=True, default="NULL")
-    date = models.CharField(max_length=200, blank=True, default="NULL")
+    mood = models.CharField(max_length=500, blank=True, default="NULL")
+    date = models.CharField(max_length=500, blank=True, default="NULL")
     log = models.CharField(max_length=10000, blank=True, default="NULL")
     analysis = models.CharField(max_length=10000, blank=True, default="NULL")
+    goalStatus = models.CharField(max_length=500, blank=True, default="NULL")
     owner = models.ForeignKey(
         User,
         related_name="logs",

@@ -28,7 +28,7 @@ import {
     goalStatusSelector,
     loadingSelector,
 } from "../../../redux/selectors/logs";
-import {ownerSelector} from "../../../redux/selectors/auth";
+import { ownerSelector } from "../../../redux/selectors/auth";
 
 function Audio(props) {
     const [state, setState] = useState({
@@ -68,7 +68,7 @@ function Audio(props) {
     const handleData = (audio) => {
         const reader = new FileReader;
         reader.readAsDataURL(audio.blob);
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             const base64audio = reader.result;
             setState({
                 ...state,
@@ -77,59 +77,58 @@ function Audio(props) {
             })
         };
     };
-
-    return(
+    return (
         <>
-        <Dialog maxWidth="lg" className="dialog-main" open={props.open}>
-            <DialogTitle>Record an audio log</DialogTitle>
-            <DialogContent>
-                <DialogContentText>Record a reflection and our powerful AI will analyze your mood, providing feedback based off your sentiment and goal progress</DialogContentText>
-                <div>
-                    <p>Hit start to record an audio log, reflecting on your day</p>
-                    <div className="audio-outline">
-                        <AudioReactRecorder
-                            canvasHeight={0}
-                            state={state.recording}
-                            onStop={handleData}
-                        />
+            <Dialog maxWidth="lg" className="dialog-main" open={props.open}>
+                <DialogTitle>Record an audio log</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>Record a reflection and our powerful AI will analyze your mood, providing feedback based off your sentiment and goal progress</DialogContentText>
+                    <div>
+                        <p>Hit start to record an audio log, reflecting on your day</p>
+                        <div className="audio-outline">
+                            <AudioReactRecorder
+                                canvasHeight={0}
+                                state={state.recording}
+                                onStop={handleData}
+                            />
+                        </div>
+                        <Button
+                            id="start-btn"
+                            onClick={handleStart}
+                            disabled={state.isRecording}
+                            variant="outlined"
+                        >
+                            <Mic style={{ paddingRight: '3px' }} /> Start
+                    </Button>
+                        <Button
+                            id="stop-btn"
+                            onClick={handleStop}
+                            variant="outlined"
+                            disabled={!state.isRecording}
+                        >
+                            <Stop style={{ paddingRight: '3px' }} /> Stop
+                    </Button>
                     </div>
+                    <audio style={{ marginTop: '10px' }} src={state.base64audio} controls />
+                </DialogContent>
+                <DialogActions>
                     <Button
-                        id="start-btn"
-                        onClick={handleStart}
-                        disabled={state.isRecording}
                         variant="outlined"
+                        color="secondary"
+                        onClick={props.handleClose}
                     >
-                        <Mic style={{paddingRight: '3px'}} /> Start
-                    </Button>
+                        Not today
+                </Button>
                     <Button
-                        id="stop-btn"
-                        onClick={handleStop}
+                        disabled={state.base64audio.length === 0}
+                        color="primary"
                         variant="outlined"
-                        disabled={!state.isRecording}
+                        onClick={handleSubmit}
                     >
-                        <Stop style={{paddingRight: '3px'}} /> Stop
-                    </Button>
-                </div>
-                <audio style={{marginTop: '10px'}} src={state.base64audio} controls/>
-            </DialogContent>
-            <DialogActions>
-                <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={props.handleClose}
-                >
-                    Not today
+                        Analyze
                 </Button>
-                <Button
-                    disabled={state.base64audio.length === 0}
-                    color="primary"
-                    variant="outlined"
-                    onClick={handleSubmit}
-                >
-                    Analyze
-                </Button>
-            </DialogActions>
-        </Dialog>
+                </DialogActions>
+            </Dialog>
         </>
     )
 
