@@ -1,4 +1,4 @@
-# Moodivity
+# Moodivity - Winner of Best use of Google Cloud API, HackWestern 2020
 
 ### About the application
 
